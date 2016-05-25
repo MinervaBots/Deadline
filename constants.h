@@ -41,6 +41,7 @@ void setup();
 bool buttonIsPressed();
 float pid_control(float error);
 float stem_pid_control(float error);
+void calibrate();
 float read_sensors();
 float read_pot();
 float millis();
