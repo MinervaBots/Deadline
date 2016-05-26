@@ -1,4 +1,4 @@
-//COISAS PENDENTES: millis(), read_sensors(), move_stem(), read_border(), read_pot()
+//COISAS PENDENTES: millis(), read_sensors(), read_border(), read_pot()
 
 #include <stdbool.h>
 #include "functions.h"

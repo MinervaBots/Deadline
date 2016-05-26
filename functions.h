@@ -189,8 +189,32 @@ void move_robot_old_style(float control_output){
       }
 }
 
+void move_stem(float input){
+      if(input>0){
+          if(max_speed - input<0){
+             SMOTOR1 = max_speed;
+             SMOTOR2 = 0;
+          }
+          else{
+             SMOTOR1 = input;
+             SMOTOR2 = 0;
+          }
+      }
+      else{
+          if(max_speed + input<0){
+             SMOTOR1 = 0;
+             SMOTOR2 = max_speed;
+          }
+          else{
+             SMOTOR1 = 0;
+             SMOTOR2 = -input;
+          }
+      }
+}
+
 float pid_control(float error)
 {
+  //pid da posição do corpo
   if(millis() - pid_last_run < DT * 1000)
     return output;
   integral += Ki*DT*error;
@@ -202,6 +226,7 @@ float pid_control(float error)
 
 float s_pid_control(float error)
 {
+  //pid de controle da haste
   if(millis() - s_pid_last_run < DT * 1000)
     return s_output;
   s_integral += sKi*DT*error;
