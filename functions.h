@@ -10,28 +10,51 @@
 
 void port_setup()
 {
+    //------------Motores:----------------//
+     TRISB14_bit=0;      //RMOTOR1, pino 14           //Locomoção Direito
+     TRISA10_bit=0;      //RMOTOR2, pino 12
+     TRISB10_bit=0;      //LMOTOR1, pino 8            //Locomoção Esquerdo
+     TRISB12_bit=0;      //LMOTOR2, pino 10
+     TRISC6_bit=0;       //SMOTOR1, pino 2            //Servo
+     TRISC8_bit=0;       //SMOTOR2, pino 4
+     //------------Diversos:--------------//
+     TRISA0_bit=1;       //Leitura do Potenciometro, pino 19 [Analógica]
+     TRISB2_bit=1;       //Switch, pino 23 [Analógica] ~~> desabilitar no ANSELB
+     TRISB3_bit=0;       //Led, pino 24 [Analógica] ~~> desabilitar no ANSELB
+     TRISA1_bit=1;       //QEI A direito, pino 20 [Analógica] ~~> desabilitar no ANSELA
+     TRISB0_bit=1;       //QEI B direito, pino 21 [Analógica] ~~> desabilitar no ANSELB
+     TRISA4_bit=1;       //QEI A esquerdo, pino 34 [Analógica] ~~> desabilitar no ANSELA
+     TRISA9_bit=1;       //QEI B esquerdo, pino 35 [Analógica] ~~> desabilitar no ANSELA
+     TRISC7_bit=0;       //TX, pino 3   ~~>  talvez não funcione por ser PWML [ Nos últimos testes de PWM, não conseguimos utilizar PWML indepedente de PWMH]
+     //-------Array de sensores:-----------//
+     TRISC0_bit=1;       //AN6, 1S, pino 25 [Analógica]
+     TRISC1_bit=1;       //AN7, 2S, pino 26 [Analógica]
+     TRISC2_bit=1;       //AN8, 3S, pino 27 [Analógica]
+     TRISC3_bit=1;       //AN29, 4S, pino 36 [Analógica]
+     TRISC4_bit=1;       //AN30, 5S, pino 37 [Analógica]
+     TRISC5_bit=1;       //AN31, 6S, pino 38 [Analógica]
+     TRISB7_bit=1;       //AN25, 7S, pino 43 [Analógica]
+     TRISB8_bit=1;       //AN26, 8S, pino 24 [Analógica]
+     //--------Sensores de borda:-----------//
+     TRISB9_bit=1;       //AN27, SBorda_Esquerdo, pino 1 [Analógica] ~~> Caso não seja possível utilizar o pino 3 para TX, utilizaremos este e usaremos apenas o sensor direito.
+     TRISB1_bit=1;       //AN3, SBorda_Direito, pino 22 [Analógica] 
+     //---------Portas Analógicas:-----------//
+     //Habilitando portas analógicas e desabilitando portas analógicas que serão utilizadas como digitais:
+     ANSELA = 0b1111110111101101;
+     ANSELB = 0b1111111111110010;
+     
      //int POSCNTcopy = 0;         \\coisa do encoder [em teste]
      //VEL1CNT = 0;
-     TRISB14_bit=0;      //RMOTOR1
-     TRISB12_bit=0;      //RMOTOR2
-     TRISB10_bit=0;      //LMOTOR1
-     TRISA10_bit=0;      //LMOTOR2
-     TRISC8_bit=0;       //SMOTOR1
-     TRISC6_bit=0;       //SMOTOR2
-     TRISB2_bit=1;       //Switch
-     TRISB3_bit=0;       //Led
-     TRISA8_bit=1;       //QEI B direito
-     TRISB4_bit=1;       //QEI A direito
-     TRISC7_bit=0;       //TX
-     
+
      UART1_Init(4800);   //4800 DE BAUD RATE
      ADC1_Init();        //inicializa conversor analógico-digital
      
+     //Mapeamento de portas periféricas:  ( Entradas dos Encoders[QEAx] e TX do UART[Para fazer o debug no Arduino] )
      Unlock_IOLOCK();
 
-     //PPS_Mapping(54, _INPUT,_U1RX);   //pino 2 RX
-     //PPS_Mapping(54, _INPUT,_INDX1);
-     PPS_Mapping(55, _OUTPUT,_U1TX);  //pino 3 TX
+     PPS_Mapping(55, _OUTPUT,_U1TX);  //pino 3 TX  ~~> será mudado para para o pino 1 caso não seja possível utilizar aqui [como já explicado ali em cima]
+     PPS_Mapping(17, _INPUT,_QEA1);   //pino 20 A direito
+     PPS_Mapping(36, _INPUT,_QEB1);   //pino 32 B direito
      PPS_Mapping(36, _INPUT,_QEA1);   //pino 33 QEA1
      PPS_Mapping(24, _INPUT,_QEB1);   //pino 32 QEB1
 
