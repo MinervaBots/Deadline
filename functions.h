@@ -53,10 +53,10 @@ void port_setup()
      Unlock_IOLOCK();
 
      PPS_Mapping(55, _OUTPUT,_U1TX);  //pino 3 TX  ~~> será mudado para para o pino 1 caso não seja possível utilizar aqui [como já explicado ali em cima]
-     PPS_Mapping(17, _INPUT,_QEA1);   //pino 20 A direito
-     PPS_Mapping(36, _INPUT,_QEB1);   //pino 32 B direito
-     PPS_Mapping(36, _INPUT,_QEA1);   //pino 33 QEA1
-     PPS_Mapping(24, _INPUT,_QEB1);   //pino 32 QEB1
+     PPS_Mapping(17, _INPUT,_QEA1);   //pino 20, A direito
+     PPS_Mapping(32, _INPUT,_QEB1);   //pino 21, B direito
+     PPS_Mapping(20, _INPUT,_QEA1);   //pino 34, A esquerdo
+     PPS_Mapping(25, _INPUT,_QEB1);   //pino 35, B esquerdo
 
      Lock_IOLOCK();
 }
