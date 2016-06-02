@@ -77,7 +77,7 @@ void PWM_setup(){
      SMOTOR1=0;
      SMOTOR2=0;
      
-     //Setagem dos registradores, é uma boa rever como isso funciona:
+     // Setagem dos registradores, é uma boa rever como isso funciona:
      DTR1 = DTR2 =  0;
      // DTR1 = 0;
      ALTDTR1 = ALTDTR2 = 0;
