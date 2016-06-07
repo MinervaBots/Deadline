@@ -1,12 +1,5 @@
 #include "constants.h"
 
-//Millis functions definitions
-#define PR1_VALUE  39062  //9765*4
-#define PRESCALER  256
-#define MACHINE_CYCLE   0.0000001
-#define OVERFLOW_TIME  MACHINE_CYCLE * PRESCALER * PR1_VALUE * 1000  //250*4 = 1000
-#define MILLIS_SCALER  PRESCALER * MACHINE_CYCLE * 1000
-
 
 void port_setup()
 {
@@ -49,7 +42,7 @@ void port_setup()
      UART1_Init(4800);   //4800 DE BAUD RATE
      ADC1_Init();        //inicializa conversor analógico-digital
      
-     //Mapeamento de portas periféricas:  ( Entradas dos Encoders[QEAx] e TX do UART[Para fazer o debug no Arduino] )
+     // Mapeamento de portas periféricas:  ( Entradas dos Encoders[QEAx] e TX do UART[Para fazer o debug no Arduino] )
      Unlock_IOLOCK();
 
      PPS_Mapping(55, _OUTPUT,_U1TX);  //pino 3 TX  ~~> será mudado para para o pino 1 caso não seja possível utilizar aqui [como já explicado ali em cima]
@@ -142,46 +135,6 @@ float read_sensors(){
       return 0;         //colocar aqui código de leitura do array de sensores
 }
 
-float millis(){
-	double millis();
-	void T1Interrupt();
-	void initTimer();
-    
-    double timerOverflow = 0;
-
-/****** Timer 1 interruption Function *******/
-
-	void T1Interrupt() iv IVT_ADDR_T1INTERRUPT ics ICS_AUTO {
-		timerOverflow += OVERFLOW_TIME;
-		IFS0bits.T1IF = 0;
-	}
-
-
-	double millis(){
-		return timerOverflow + TMR1*MILLIS_SCALER;
-}
-
-	void initTimer()
-{
- 		//Initialize Timer 1 for millis function
-		// machine cycle = 1/(Fosc/2) = 1E-07
-		// Overflow = PR1 x prescaler x machine cycle
-		//          = 39062 x 256 x 1E-07 = 1000 ms
-
-
-		T1CON = 0;              // Reset TIMER 1 Configuration
-		T1CONbits.TCKPS = 0b11; // Prescaler = 256
-		T1CONbits.TON = 1;      // Enables TIMER1
-
-		T1IF_bit = 0;           // timer 1 Overflow flag
-		TMR1 = 0;               // Reset TIMER 1 Register
-		PR1 = PR1_VALUE;        // TIMER 1 period to interrupt
-		IEC0bits.T1IE = 1;      // Enables TIMER 1 interruption
-		IPC0bits.T1IP = 1;      // T1IP<2:0> = 1 ( priority 1 interruption)
-
-
-}
-
 float read_pot(){       //código pra leitura do pot
       return 0;
 }
@@ -235,31 +188,21 @@ void move_stem(float input){
       }
 }
 
-float pid_control(float error)
+void pid_control(float error, float *output)
 {
   //pid da posição do corpo
-  if(millis() - pid_last_run < DT * 1000)
-    return output;
   integral += Ki*DT*error;
-  output = Kp * error + integral + Kd *(error-last_error)/DT;
+  *output = Kp * error + integral + Kd *(error-last_error)/DT;
   last_error = error;
-  pid_last_run = millis();
-  return output;
 }
 
-float s_pid_control(float error)
+void s_pid_control(float error, float *s_output)
 {
   //pid de controle da haste
-  if(millis() - s_pid_last_run < DT * 1000)
-    return s_output;
   s_integral += sKi*DT*error;
-  s_output = sKp* error + s_integral + sKd *(error-s_last_error)/DT;
+  *s_output = sKp* error + s_integral + sKd *(error-s_last_error)/DT;
   s_last_error = error;
-  s_pid_last_run = millis();
-  return s_output;
 }
-
-
 
 void InitQEI1()  //função para inicializar módulo QEI
 {

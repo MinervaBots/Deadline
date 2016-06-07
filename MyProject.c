@@ -2,6 +2,7 @@
 
 #include <stdbool.h>
 #include "functions.h"
+#include "millis.h"
 
 void main(){
      port_setup();
@@ -29,14 +30,12 @@ void main(){
      
      while(following)
      {
-                     stem_position = s_pid_control(read_sensors());
-                     move_stem(stem_position);
-                     angular_speed = pid_control(read_pot());
-                     move_robot_old_style(angular_speed);
+                     move_stem(s_output);
+                     move_robot_old_style(output);
                      //read_border();
                      if ( (right_counter > (MARKS_NUM-1) )){
                        following = 0;
-                       LED=0;;
+                       LED=0;
                      }
      }
 }

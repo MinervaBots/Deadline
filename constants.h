@@ -26,15 +26,10 @@ float sKD = 0;
 //-------------------------------
 float output=0;
 float s_output=0;
-float s_pid_last_run=0;
-float pid_last_run=0;
 float last_error=0;
 float s_last_error=0;
 float integral = 0;
 float s_integral = 0;
-float angular_speed = 0;
-float stem_position = 0;
-
 
 //Declaração de funções:
 void setup();
