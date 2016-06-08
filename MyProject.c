@@ -1,4 +1,4 @@
-//COISAS PENDENTES: millis(), read_sensors(), read_border(), read_pot()
+//COISAS PENDENTES: read_border(), read_pot()
 
 #include <stdbool.h>
 #include "functions.h"
@@ -7,15 +7,31 @@
 void main(){
      port_setup();
      PWM_setup();
+     
+     #ifdef DEBUG
+     UART1_Write_text("Esperando Botão");
+     UART1_Write_text("\n");
+     #endif
+     
      while( !buttonIsPressed() );
      Delay_ms(500);
      LED=1;
-     //Calibrando
+     
+     #ifdef DEBUG
+     UART1_Write_text("Calibrando");
+     UART1_Write_text("\n");
+     #endif
+     
      while( !buttonIsPressed() ){
       //qtra.calibrate();
       //qtrd.calibrate();
      }
-     //Calibrado
+     
+     #ifdef DEBUG
+     UART1_Write_text("Calibrado");
+     UART1_Write_text("\n");
+     #endif
+     
      LED=1;
      Delay_ms(500);
      LED=0;
@@ -27,6 +43,11 @@ void main(){
      Delay_ms(1000);
      LED=1;
      max_speed = PERIOD/2;
+     
+     #ifdef DEBUG
+     UART1_Write_text("Seguindo");
+     UART1_Write_text("\n");
+     #endif
      
      while(following)
      {

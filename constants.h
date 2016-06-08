@@ -8,6 +8,8 @@
 #define PERIOD 1000
 #define BUTTON RB2_bit
 #define LED RB3_bit
+// Sensor de reflectancia Center_position {4 sensores = 1500, 6 sensores => 2500, 8 sensores => 3500}
+#define CENTER_POSITION 3500.0
 
 //Constantes:
 bool following=0;
@@ -30,6 +32,8 @@ float last_error=0;
 float s_last_error=0;
 float integral = 0;
 float s_integral = 0;
+float erro_maximo   = 10.0; //       Raposo: atan(LARGURA_SENSOR/(2.0 * ALTURA_SENSOR));
+
 
 //Declaração de funções:
 void setup();

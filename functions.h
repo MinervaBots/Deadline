@@ -1,4 +1,5 @@
 #include "constants.h"
+#include "sensors.h"
 
 
 void port_setup()
@@ -44,8 +45,9 @@ void port_setup()
      
      // Mapeamento de portas periféricas:  ( Entradas dos Encoders[QEAx] e TX do UART[Para fazer o debug no Arduino] )
      Unlock_IOLOCK();
-
+     #ifdef DEBUG
      PPS_Mapping(55, _OUTPUT,_U1TX);  //pino 3 TX  ~~> será mudado para para o pino 1 caso não seja possível utilizar aqui [como já explicado ali em cima]
+     #endif
      PPS_Mapping(17, _INPUT,_QEA1);   //pino 20, A direito
      PPS_Mapping(32, _INPUT,_QEB1);   //pino 21, B direito
      PPS_Mapping(20, _INPUT,_QEA1);   //pino 34, A esquerdo
@@ -93,46 +95,17 @@ bool buttonIsPressed(){
          return 0;
 }
 
-void calibrate(unsigned int numSensors, unsigned int numSamples, unsigned int *pins,unsigned int * calibratedMinimum,unsigned int * calibratedMaximum) //Calibragem de sensores
-{
-    int i;
-    int j;
-    unsigned int sensor_values[16];
-    unsigned int max_sensor_values[16];
-    unsigned int min_sensor_values[16];
-    unsigned int _maxValue = 100000;
-
-    if(*calibratedMaximum == 0)
-    {
-        for(i=0;i<numSensors;i++)
-         (calibratedMaximum)[i] = 0;
-    }
-    
-    if(*calibratedMinimum == 0)
-    {
-        for(i=0;i<numSensors;i++)
-            (calibratedMinimum)[i] = _maxValue;
-    }
-    for(j=0;j<10;j++)
-    {
-        read(sensor_values,numSensors,numSamples,pins);
-        for(i=0;i<numSensors;i++)
-        {
-            if(j == 0 || max_sensor_values[i] < sensor_values[i])
-                max_sensor_values[i] = sensor_values[i];
-            if(j == 0 || min_sensor_values[i] > sensor_values[i])
-                min_sensor_values[i] = sensor_values[i];
-        }
-    }
-    for(i=0;i<numSensors;i++)
-    {
-        if(min_sensor_values[i] > (calibratedMaximum)[i])
-
 float read_sensors(){
-	
-
-
-      return 0;         //colocar aqui código de leitura do array de sensores
+   /*#ifdef DEBUG
+  Serial.print("erro: ");
+  Serial.println(erro_maximo*((qtra.readLine(sensors, QTR_EMITTERS_ON, WHITE_LINE) - CENTER_POSITION)/CENTER_POSITION));
+  #endif*/
+  
+  return erro_maximo*((readLine(sensors, QTR_EMITTERS_ON, WHITE_LINE) - CENTER_POSITION)/CENTER_POSITION);
+  
+  /*if(on_the_line())
+    erro = -  *((1000.0-sensors[0]) * 3 + (1000.0-sensors[1]) * 2 + (1000.0 -sensors[2]) - (1000.0-sensors[3]) - (1000-sensors[4]) * 2 - (1000.0-sensors[5]) *3)/12000.0; 
+  return erro;*/	         //colocar aqui código de leitura do array de sensores
 }
 
 float read_pot(){       //código pra leitura do pot
