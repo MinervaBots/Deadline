@@ -1,7 +1,8 @@
 //COISAS PENDENTES: read_border(), read_pot()
 
+//#define DEBUG
+
 #include <stdbool.h>
-#include "functions.h"
 #include "millis.h"
 
 void main(){
@@ -23,6 +24,7 @@ void main(){
      #endif
      
      while( !buttonIsPressed() ){
+      //Colocar aqui funções de calibração do array de sensores e do sensor de borda (pro sensor de borda talvez não seja necessário -> testar)
       //qtra.calibrate();
       //qtrd.calibrate();
      }
@@ -49,6 +51,7 @@ void main(){
      UART1_Write_text("\n");
      #endif
      
+     initTimer();
      while(following)
      {
                      move_stem(s_output);

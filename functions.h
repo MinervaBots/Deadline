@@ -39,8 +39,9 @@ void port_setup()
      
      //int POSCNTcopy = 0;         \\coisa do encoder [em teste]
      //VEL1CNT = 0;
-
+     #ifdef DEBUG
      UART1_Init(4800);   //4800 DE BAUD RATE
+     #endif
      ADC1_Init();        //inicializa conversor analógico-digital
      
      // Mapeamento de portas periféricas:  ( Entradas dos Encoders[QEAx] e TX do UART[Para fazer o debug no Arduino] )
@@ -96,16 +97,8 @@ bool buttonIsPressed(){
 }
 
 float read_sensors(){
-   /*#ifdef DEBUG
-  Serial.print("erro: ");
-  Serial.println(erro_maximo*((qtra.readLine(sensors, QTR_EMITTERS_ON, WHITE_LINE) - CENTER_POSITION)/CENTER_POSITION));
-  #endif*/
-  
-  return erro_maximo*((readLine(sensors, QTR_EMITTERS_ON, WHITE_LINE) - CENTER_POSITION)/CENTER_POSITION);
-  
-  /*if(on_the_line())
-    erro = -  *((1000.0-sensors[0]) * 3 + (1000.0-sensors[1]) * 2 + (1000.0 -sensors[2]) - (1000.0-sensors[3]) - (1000-sensors[4]) * 2 - (1000.0-sensors[5]) *3)/12000.0; 
-  return erro;*/	         //colocar aqui código de leitura do array de sensores
+  //return erro_maximo*((readLine(sensors, QTR_EMITTERS_ON, WHITE_LINE) - CENTER_POSITION)/CENTER_POSITION);  // colocar no lugar de readLine a função de leitura do array de sensores
+  return 0;        //Está retornando 0 pq a função de leitura do array de sensores ainda não está pronta   
 }
 
 float read_pot(){       //código pra leitura do pot
@@ -130,7 +123,8 @@ void move_robot_old_style(float control_output){
           LMOTOR2 = 0;
           if (max_speed + control_output < 0){
             RMOTOR1 = 0;
-            RMOTOR2 = floor(max_speed + control_output);              }
+            RMOTOR2 = floor(max_speed + control_output);              
+          }
           else{
             RMOTOR1 = floor(max_speed + control_output);
             RMOTOR2 = 0;

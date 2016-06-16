@@ -4,8 +4,8 @@
 #include "functions.h"
 
 //#define PR1_VALUE  39062  //9765*4
-//#define PR1_VALUE  0xC350 //0xFFFF + 1 = 65530 + 1
-#define PR1_VALUE C350  // PR1*1/Fcy = DT ~> PR1 = DT * Fcy  (DT=0.005 & Fcy =20^6/2 ) ~> PR1 = 50000dec = C350hex
+#define PR1_VALUE  0xC350 //0xFFFF + 1 = 65530 + 1
+//#define PR1_VALUE C350  // PR1*1/Fcy = DT ~> PR1 = DT * Fcy  (DT=0.005 & Fcy =20^6/2 ) ~> PR1 = 50000dec = C350hex
 #define PRESCALER  1
 #define MACHINE_CYCLE  0.0000001
 #define OVERFLOW_TIME  MACHINE_CYCLE * PRESCALER * PR1_VALUE * 1000  //250*4 = 1000
